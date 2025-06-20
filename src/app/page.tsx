@@ -1,103 +1,70 @@
-import Image from "next/image";
+import BarraDeBusca from "@/components/barraDeBusca";
+import Paginacao from "@/components/paginacao";
+import Tabela from "@/components/tabela";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Search, Table } from "lucide-react";
 
-export default function Home() {
+
+// Sample data - replace with your actual data
+const sampleData = [
+  { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active', joinDate: '2023-01-15' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Active', joinDate: '2023-02-20' },
+  { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'Moderator', status: 'Inactive', joinDate: '2023-03-10' },
+  { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'User', status: 'Active', joinDate: '2023-04-05' },
+  { id: 5, name: 'Charlie Wilson', email: 'charlie@example.com', role: 'Admin', status: 'Active', joinDate: '2023-05-12' },
+  { id: 6, name: 'Diana Martinez', email: 'diana@example.com', role: 'User', status: 'Inactive', joinDate: '2023-06-18' },
+  { id: 7, name: 'Edward Davis', email: 'edward@example.com', role: 'Moderator', status: 'Active', joinDate: '2023-07-22' },
+  { id: 8, name: 'Fiona Garcia', email: 'fiona@example.com', role: 'User', status: 'Active', joinDate: '2023-08-30' },
+  { id: 9, name: 'George Miller', email: 'george@example.com', role: 'Admin', status: 'Inactive', joinDate: '2023-09-14' },
+  { id: 10, name: 'Helen Rodriguez', email: 'helen@example.com', role: 'User', status: 'Active', joinDate: '2023-10-08' },
+  { id: 11, name: 'Ian Thompson', email: 'ian@example.com', role: 'Moderator', status: 'Active', joinDate: '2023-11-25' },
+  { id: 12, name: 'Julia Anderson', email: 'julia@example.com', role: 'User', status: 'Inactive', joinDate: '2023-12-03' },
+  { id: 13, name: 'Kevin White', email: 'kevin@example.com', role: 'Admin', status: 'Active', joinDate: '2024-01-17' },
+  { id: 14, name: 'Lisa Taylor', email: 'lisa@example.com', role: 'User', status: 'Active', joinDate: '2024-02-14' },
+  { id: 15, name: 'Michael Lee', email: 'michael@example.com', role: 'Moderator', status: 'Inactive', joinDate: '2024-03-21' },
+  { id: 16, name: 'Nancy Clark', email: 'nancy@example.com', role: 'User', status: 'Active', joinDate: '2024-04-18' },
+  { id: 17, name: 'Oscar Lewis', email: 'oscar@example.com', role: 'Admin', status: 'Inactive', joinDate: '2024-05-25' },
+  { id: 18, name: 'Patricia Hall', email: 'patricia@example.com', role: 'Moderator', status: 'Active', joinDate: '2024-06-12' },
+];
+
+
+export default async function Home(props: { searchParams?: Promise<{ query?: string, page?: string }> }) {
+  const r = await props?.searchParams
+
+  const { query, page } = r ?? { page: '1', query: '' }
+
+  const currentPage = Number(page ?? '1')
+
+  const filteredData = sampleData.filter(({ name }) => name.includes(query ?? ''))
+
+  const itemsPerPage = 5;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = filteredData.slice(startIndex, endIndex)
+
+  const totalData = Math.ceil(sampleData.length / itemsPerPage)
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="w-full max-w-6xl mx-auto p-6 space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">User Management</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <BarraDeBusca />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <Tabela itens={currentData} />
+
+          <div className="text-sm text-muted-foreground">
+            Showing {currentData.length > 0 ? startIndex + 1 : 0} to {Math.min(endIndex, sampleData.length)} of {sampleData.length} results
+          </div>
+
+          <Paginacao total={totalData} />
+
+        </CardContent>
+      </Card>
     </div>
-  );
+  )
 }
