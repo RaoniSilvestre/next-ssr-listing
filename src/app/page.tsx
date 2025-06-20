@@ -2,9 +2,6 @@ import BarraDeBusca from "@/components/barraDeBusca";
 import Paginacao from "@/components/paginacao";
 import Tabela from "@/components/tabela";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, Table } from "lucide-react";
 
 
 // Sample data - replace with your actual data
